@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Programa: {{ programa.nombre }}</title>
+</head>
+<body>
+  <h2>{{ programa.nombre }}</h2>
+  <p>{{ programa.descripcion }}</p>
+
+  <div>
+    {% for fx in fx_programa %}
+      <button onclick="playFx('{{ fx.archivo.url }}', '{{ fx.volumen_default }}')">{{ fx.nombre }}</button>
+      {% if user in programa.operadores.all or es_jefe %}
+        <a href="{% url 'fx_editar' fx.id %}">Editar</a>
+      {% endif %}
+    {% empty %}
+      <p>No hay FX para este programa.</p>
+    {% endfor %}
+  </div>
+
+  <script>
+    let currentAudio = null;
+    function playFx(url, volume=1.0) {
+      if (currentAudio) { currentAudio.pause(); currentAudio.currentTime = 0; }
+      currentAudio = new Audio(url);
+      currentAudio.volume = Math.max(0, Math.min(1, volume));
+      currentAudio.play();
+    }
+  </script>
+</body>
+</html>

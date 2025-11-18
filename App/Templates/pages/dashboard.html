@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Botonera FX - Dashboard</title>
+</head>
+
+<body>
+    <h2>Hola, {{ user.username }}</h2>
+
+    {% if es_jefe %}
+    <p>Eres Jefe de Operadores. Tienes acceso total.</p>
+    {% endif %}
+
+    <h3>FX institucionales</h3>
+    <div>
+        {% for fx in fx_institucionales %}
+        <button data-url="{% url 'fx_play' fx.id %}" data-color="{{ fx.color_boton|default:'#ddd' }}"
+            data-file-url="{{ fx.archivo.url }}" data-volume="{{ fx.volumen_default }}"
+            onclick="playFx(this.getAttribute('data-file-url'), parseFloat(this.getAttribute('data-volume') || '1'))"
+            title="{{ fx.nombre }}">{{ fx.nombre }}</button>
+        {% empty %}
+        <p>No hay FX institucionales.</p>
+        {% endfor %}
+    </div>
+
+    <h3>Mis FX propios</h3>
+    <div>
+        {% for fx in fx_propios %}
+        <button data-file-url="{{ fx.archivo.url }}" data-volume="{{ fx.volumen_default }}"
+            onclick="playFx(this.getAttribute('data-file-url'), parseFloat(this.getAttribute('data-volume') || '1'))">{{
+            fx.nombre }}</button>
+        <a href="{% url 'fx_editar' fx.id %}">Editar</a>
+        {% empty %}
+        <p>Aún no tienes FX propios.</p>
+        {% endfor %}
+    </div>
+
+
+    <h3>Programas asignados</h3>
+    <ul>
+        {% for p in programas %}
+        <li><a href="{% url 'programa_detalle' p.id %}">{{ p.nombre }}</a></li>
+        {% empty %}
+        <li>No tienes programas asignados.</li>
+        {% endfor %}
+    </ul>
+
+
+    <script>
+        let currentAudio = null;
+        function playFx(url, volume = 1.0) {
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+            }
+            currentAudio = new Audio(url);
+            currentAudio.volume = Math.max(0, Math.min(1, volume));
+            currentAudio.play();
+        }
+    </script>
+</body>
+
+</html>

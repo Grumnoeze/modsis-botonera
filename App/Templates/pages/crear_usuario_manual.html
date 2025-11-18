@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Crear Usuario Manual</title>
+</head>
+<body>
+  <h2>Crear usuario con rol</h2>
+  <form method="post">
+    {% csrf_token %}
+
+    <label for="username">Nombre de usuario:</label><br>
+    <input type="text" name="username" required><br><br>
+
+    <label for="password">Contraseña:</label><br>
+    <input type="password" name="password" required><br><br>
+
+    <label for="rol">Rol:</label><br>
+    <select name="rol" required>
+      <option value="JEFE">Jefe de Operadores</option>
+      <option value="OPERADOR">Operador Técnico</option>
+      <option value="PRODUCTOR">Productor</option>
+    </select><br><br>
+
+    <button type="submit">Crear usuario</button>
+  </form>
+</body>
+</html>
