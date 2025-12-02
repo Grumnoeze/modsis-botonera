@@ -8,6 +8,8 @@ from django.contrib.auth import login, logout
 from .forms import RegistroUsuarioForm
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Q
+
 
 def crear_usuario_manual(request):
     if request.method == 'POST':
@@ -27,7 +29,15 @@ def crear_usuario_manual(request):
 
 @login_required
 def registrar_usuario(request):
-    if not request.user.PerfilUsuario.rol == 'JEFE':
+    try:
+        perfil = request.user.perfilusuario
+    except PerfilUsuario.DoesNotExist:
+        return HttpResponseForbidden("Tu perfil no está configurado.")
+
+    if perfil.rol != 'JEFE':
+        return HttpResponseForbidden("No tienes permisos para registrar usuarios.")
+
+    if not request.user.perfilusuario.rol == 'JEFE':
         return HttpResponseForbidden("No tienes permisos para registrar usuarios.")
 
     if request.method == 'POST':
@@ -40,6 +50,15 @@ def registrar_usuario(request):
 
     return render(request, 'pages/registrar.html', {'form': form})
 
+@login_required
+def perfil_view(request):
+    perfil = None
+    try:
+        perfil = request.user.perfilusuario
+    except:
+        pass
+    return render(request, 'pages/perfil.html', {'perfil': perfil})
+    
 def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
@@ -60,17 +79,34 @@ def logout_view(request):
 
 @login_required
 def dashboard(request):
-    # Vista principal: muestra tabs de programas asignados, FX propios y FX institucionales
-    programas_operador = Programa.objects.filter(operadores=request.user, activo=True)
-    fx_propios = FX.objects.filter(scope=FX.Scope.OPERADOR, propietario=request.user, activo=True)
+    # Perfil del usuario logueado
+    try:
+        perfil = request.user.perfilusuario
+    except PerfilUsuario.DoesNotExist:
+        perfil = None
+
+    # FX institucionales (visibles para todos)
     fx_institucionales = FX.objects.filter(scope=FX.Scope.INSTITUCIONAL, activo=True)
 
-    return render(request, 'pages/dashboard.html', {
-        'programas': programas_operador,
-        'fx_propios': fx_propios,
-        'fx_institucionales': fx_institucionales,
-        'es_jefe': es_jefe(request.user),
-    })
+    # FX propios del usuario
+    fx_propios = FX.objects.filter(scope=FX.Scope.OPERADOR, propietario=request.user, activo=True)
+
+    # Programas asignados (como operador o productor)
+    programas = Programa.objects.filter(
+        Q(operadores=request.user) | Q(productores=request.user),
+        activo=True
+    ).distinct()    
+
+
+    context = {
+        "user": request.user,
+        "perfil": perfil,
+        "es_jefe": perfil and perfil.rol == Rol.JEFE,
+        "fx_institucionales": fx_institucionales,
+        "fx_propios": fx_propios,
+        "programas": programas,
+    }
+    return render(request, "pages/dashboard.html", context)
 
 
 @login_required
@@ -84,7 +120,25 @@ def programa_detalle(request, programa_id):
 
     fx_programa = FX.objects.filter(scope=FX.Scope.PROGRAMA, programa=programa, activo=True)
     return render(request, 'pages/programa.html', {'programa': programa, 'fx_programa': fx_programa})
+    
+@login_required
+def programa_crear(request):
+    # Solo el JEFE puede crear programas
+    if not es_jefe(request.user):
+        return HttpResponseForbidden("Solo el jefe puede crear programas.")
 
+    if request.method == "POST":
+        nombre = request.POST.get("nombre")
+        descripcion = request.POST.get("descripcion", "")
+
+        programa = Programa.objects.create(
+            nombre=nombre,
+            descripcion=descripcion,
+            activo=True
+        )
+        return redirect("dashboard")
+
+    return render(request, "pages/programa_form.html")
 
 @login_required
 def fx_crear(request, scope, programa_id=None):

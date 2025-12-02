@@ -47,7 +47,7 @@ class FX(models.Model):
         OPERADOR = "OPERADOR", "Propio del operador"
 
     nombre = models.CharField(max_length=120)
-    archivo = models.FileField(upload_to="fx/")  # puedes usar storage S3/MinIO más adelante
+    archivo = models.FileField(upload_to='fx/')
     categoria = models.ForeignKey(CategoriaFX, on_delete=models.SET_NULL, null=True, blank=True)
     scope = models.CharField(max_length=20, choices=Scope.choices, default=Scope.PROGRAMA)
 

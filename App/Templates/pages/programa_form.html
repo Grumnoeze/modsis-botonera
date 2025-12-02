@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Crear Programa</title>
+</head>
+<body>
+  <h2>Crear nuevo programa</h2>
+  <form method="post">
+    {% csrf_token %}
+    <label>Nombre</label>
+    <input type="text" name="nombre" required>
+
+    <label>Descripción</label>
+    <textarea name="descripcion"></textarea>
+
+    <button type="submit">Crear</button>
+  </form>
+</body>
+</html>

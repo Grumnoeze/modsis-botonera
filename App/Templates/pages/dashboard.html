@@ -11,7 +11,10 @@
 
     {% if es_jefe %}
     <p>Eres Jefe de Operadores. Tienes acceso total.</p>
+    <a href="{% url 'fx_crear' 'INSTITUCIONAL' %}">Crear FX institucional</a> |
+    <a href="{% url 'programa_crear' %}">Crear Programa</a>
     {% endif %}
+
 
     <h3>FX institucionales</h3>
     <div>
