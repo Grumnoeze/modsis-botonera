@@ -79,24 +79,23 @@ def logout_view(request):
 
 @login_required
 def dashboard(request):
-    # Perfil del usuario logueado
     try:
         perfil = request.user.perfilusuario
     except PerfilUsuario.DoesNotExist:
         perfil = None
 
-    # FX institucionales (visibles para todos)
     fx_institucionales = FX.objects.filter(scope=FX.Scope.INSTITUCIONAL, activo=True)
-
-    # FX propios del usuario
     fx_propios = FX.objects.filter(scope=FX.Scope.OPERADOR, propietario=request.user, activo=True)
 
-    # Programas asignados (como operador o productor)
-    programas = Programa.objects.filter(
-        Q(operadores=request.user) | Q(productores=request.user),
-        activo=True
-    ).distinct()    
-
+    if perfil and perfil.rol == Rol.JEFE:
+        # El jefe ve todos los programas
+        programas = Programa.objects.filter(activo=True)
+    else:
+        # Operadores y productores ven solo los asignados
+        programas = Programa.objects.filter(
+            Q(operadores=request.user) | Q(productores=request.user),
+            activo=True
+        ).distinct()
 
     context = {
         "user": request.user,
