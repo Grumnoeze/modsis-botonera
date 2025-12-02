@@ -16,21 +16,33 @@
 
     {% if programa %}
       <h3>Asignar Operadores</h3>
-      {% for u in usuarios %}
+      {% for u in operadores %}
         <label>
-          <input type="checkbox" name="operadores" value="{{ u.id }}"
-                 {% if u in programa.operadores.all %}checked{% endif %}>
+          <input
+            type="checkbox"
+            name="operadores"
+            value="{{ u.id }}"
+            {% if u in programa.operadores.all %}checked{% endif %}
+          >
           {{ u.username }} ({{ u.perfilusuario.rol }})
         </label><br>
+      {% empty %}
+        <p>No hay operadores disponibles.</p>
       {% endfor %}
 
       <h3>Asignar Productores</h3>
-      {% for u in usuarios %}
+      {% for u in productores %}
         <label>
-          <input type="checkbox" name="productores" value="{{ u.id }}"
-                 {% if u in programa.productores.all %}checked{% endif %}>
+          <input
+            type="checkbox"
+            name="productores"
+            value="{{ u.id }}"
+            {% if u in programa.productores.all %}checked{% endif %}
+          >
           {{ u.username }} ({{ u.perfilusuario.rol }})
         </label><br>
+      {% empty %}
+        <p>No hay productores disponibles.</p>
       {% endfor %}
     {% endif %}
 
