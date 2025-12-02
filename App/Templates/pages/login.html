@@ -7,24 +7,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Botonera FX</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 {% block contenido %}
-<body class="layout">
-    <main class="form-container">
-        <h2 class="form-title">Iniciar sesión</h2>
+<body class="retro-bg">
 
-        <form class="form-card" action="" method="post">
+    <main class="retro-login-container">
+        <h2 class="retro-title">BOTONERA FX</h2>
+
+        <form class="retro-card" method="post">
             {% csrf_token %}
             {{ form.as_p }}
 
-            <button class="btn primary-btn" type="submit">Ingresar</button>
+            <button class="retro-btn" type="submit">INGRESAR</button>
 
-            <p class="form-alt">
-                ¿No tenés cuenta?
-                <a href="{% url 'registrar' %}">Registrar usuario</a>
+            <p class="retro-alt">
+                ¿No tenés usuario?
+                <a href="{% url 'registrar' %}">Registrar</a>
             </p>
         </form>
+
     </main>
-</body>
 {% endblock %}
+</body>
 </html>

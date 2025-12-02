@@ -1,248 +1,167 @@
-/* RESET BÁSICO */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Segoe UI", Arial, sans-serif;
+/* ======== PALETA ======== */
+:root {
+    --retro-dark: #562717;
+    --retro-red: #C21717;
+    --retro-orange: #E76219;
+    --retro-yellow: #FEA712;
+    --retro-beige: #FDDCA9;
 }
 
-body.layout {
-    background: #1b1b1b;
-    color: #fff;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+body{
+    background: var(--retro-dark);
 }
 
-/* HEADER */
-.header {
-    padding: 40px 0 20px;
-}
-
-.title {
-    font-size: 2.4rem;
-    font-weight: 600;
-    text-align: center;
-}
-
-/* MENÚ PRINCIPAL */
-.main-menu {
+/* ======== FONDO ======== */
+.retro-bg {
+    background: var(--retro-dark);
+    background-image:
+        linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px),
+        linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+        radial-gradient(rgba(0,0,0,0.25) 1px, transparent 1px);
+    background-size: 90px 90px, 90px 90px, 3px 3px;
+    background-position: 0 0, 45px 45px, 0 0;
     display: flex;
     justify-content: center;
-    margin-top: 40px;
-    width: 100%;
+    align-items: center; /* <-- centrado vertical real */
+    min-height: 100vh;
+    padding: 0;
+    font-family: "Segoe UI", sans-serif;
+    color: var(--retro-beige);
 }
 
-.nav-menu {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    width: 90%;
-    max-width: 350px;
-}
 
-/* BOTONES */
-.btn {
-    display: block;
-    background: #292929;
-    color: #fff;
-    padding: 14px 20px;
-    text-align: center;
-    font-size: 1.1rem;
-    border-radius: 8px;
-    text-decoration: none;
-    transition: 0.25s;
-    border: 2px solid #444;
-}
-
-.btn:hover {
-    background: #444;
-    transform: translateY(-2px);
-}
-
-/* Responsivo */
-@media (max-width: 480px) {
-    .title {
-        font-size: 2rem;
-    }
-}
-
-/* FORMULARIOS */
-.form-container {
-    margin-top: 80px;
+/* ======== CONTENEDOR ======== */
+.retro-login-container {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.form-title {
-    font-size: 1.8rem;
+
+/* ======== TITULO ======== */
+.retro-title {
+    font-size: 2.2rem;
     margin-bottom: 25px;
-    text-align: center;
+    color: var(--retro-yellow);
+    font-weight: bold;
+    text-shadow: 3px 3px 0px #000;
+    letter-spacing: 2px;
 }
 
-.form-card {
-    background: #222;
-    padding: 30px;
-    border-radius: 12px;
+/* ======== TARJETA FORMULARIO ======== */
+.retro-card {
+    background: var(--retro-beige);
+    color: var(--retro-dark);
+    padding: 35px;
+    border-radius: 18px;
+    border: 4px solid var(--retro-red);
+    box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.8);
     width: 90%;
     max-width: 380px;
-    border: 2px solid #333;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
 }
 
-/* Campos generados por Django */
-.form-card p {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+
+/* Django fields (p tags) */
+.retro-card p {
+    text-align: left;
+    font-weight: bold;
+    margin-bottom: 18px;
 }
 
-.form-card label {
+/* Campos */
+.retro-card input {
+    padding: 10px;
+    width: 100%;
+    border-radius: 8px;
+    border: 2px solid var(--retro-orange);
+    background: #fff4e4;
+    font-weight: bold;
+    color: var(--retro-dark);
+}
+
+/* ======== BOTÓN ======== */
+.retro-btn {
+    background: var(--retro-orange);
+    border: 3px solid #000;
+    width: 100%;
+    margin-top: 10px;
+    padding: 12px;
+    font-size: 1.1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #fff;
+    letter-spacing: 1px;
+    box-shadow: 4px 4px 0px #000;
+    transition: 0.15s;
+}
+
+.retro-btn:hover {
+    background: var(--retro-red);
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px #000;
+}
+
+/* ======== TEXTO SECUNDARIO ======== */
+.retro-alt {
+    margin-top: 15px;
     font-size: 0.95rem;
 }
 
-.form-card input {
-    padding: 10px;
-    border-radius: 6px;
-    border: 1px solid #444;
-    background: #111;
-    color: #eee;
-}
-
-/* Botón principal */
-.primary-btn {
-    background: #3b82f6;
-    border-color: #3b82f6;
-}
-
-.primary-btn:hover {
-    background: #1d4ed8;
-}
-
-/* Enlace alternativo */
-.form-alt {
-    font-size: 0.9rem;
-    text-align: center;
-}
-
-.form-alt a {
-    color: #76a7ff;
+.retro-alt a {
+    color: var(--retro-red);
+    font-weight: bold;
     text-decoration: none;
 }
 
-.form-alt a:hover {
+.retro-alt a:hover {
     text-decoration: underline;
 }
 
-/* DASHBOARD */
-.dashboard {
-    padding: 20px;
-    width: 100%;
+/* ======= ESTRUCTURA ======= */
+.retro-dashboard {
     max-width: 900px;
-    margin: auto;
+    margin: 0 auto;
+    padding: 30px;
 }
 
-.dashboard-title {
-    font-size: 2rem;
+/* ======= TITULOS ======= */
+.retro-title-large {
+    font-size: 2.4rem;
+    color: var(--retro-yellow);
+    text-shadow: 3px 3px 0 #000;
     margin-bottom: 25px;
-    text-align: center;
 }
 
-/* PANEL GENÉRICO */
-.panel {
-    background: #202020;
-    padding: 25px;
-    border-radius: 14px;
-    margin-bottom: 30px;
-    border: 2px solid #2d2d2d;
+.retro-subtitle {
+    font-size: 1.6rem;
+    color: var(--retro-orange);
+    text-shadow: 2px 2px 0 #000;
+    margin-bottom: 10px;
 }
 
-.panel-title {
-    font-size: 1.4rem;
+.retro-info {
+    color: var(--retro-beige);
+    font-weight: bold;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 12px;
+    border-left: 5px solid var(--retro-yellow);
     margin-bottom: 20px;
 }
 
-/* MENSAJES */
-.info-panel {
-    background: #1e2a3a;
-    border-color: #2f4c77;
-}
-
-.info-text {
-    margin-bottom: 15px;
-}
-
-.empty {
-    color: #aaa;
-    font-style: italic;
-    padding-left: 5px;
-}
-
-/* BOTONES DE ACCIÓN */
-.action-buttons {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-}
-
-/* FX GRID */
-.fx-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 15px;
-}
-
-.fx-item {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.fx-edit {
-    text-align: center;
-    display: block;
-    color: #76a7ff;
-    font-size: 0.9rem;
-}
-
-.fx-edit:hover {
-    text-decoration: underline;
-}
-
-/* BOTONES DE FX */
-.fx-btn {
-    border: 2px solid #333;
-    padding: 15px;
+/* ======= SECCIONES ======= */
+.retro-section {
+    background: rgba(255, 255, 255, 0.07);
+    border: 3px solid var(--retro-dark);
+    padding: 20px;
     border-radius: 10px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: 0.2s;
-    font-weight: 600;
-    color: #000;
-    width: 100%;
-    text-transform: uppercase;
+    box-shadow: 6px 6px 0 #000;
+    margin-bottom: 35px;
 }
 
-.fx-btn:hover {
-    transform: translateY(-3px);
-}
-
-/* PROGRAMAS */
-.program-list {
-    list-style: none;
-}
-
-.program-link {
-    color: #76a7ff;
-    font-size: 1.05rem;
-    text-decoration: none;
-}
-
-.program-link:hover {
-    text-decoration: underline;
+/* ======= BOTONES PEQUEÑOS ======= */
+.retro-actions {
+    display: flex;
+    gap: 15px
 }

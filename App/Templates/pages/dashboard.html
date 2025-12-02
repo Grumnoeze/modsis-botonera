@@ -3,72 +3,79 @@
 
 {% block contenido %}
 
-<main class="dashboard">
+<main class="retro-dashboard">
 
-    <h2 class="dashboard-title">Hola, {{ user.username }}</h2>
+    <h2 class="retro-title-large">Hola, {{ user.username }}</h2>
 
     {% if es_jefe %}
-    <section class="panel info-panel">
-        <p class="info-text">Eres Jefe de Operadores. Tienes acceso total.</p>
+    <section class="retro-section">
+        <p class="retro-info">Eres Jefe de Operadores. Tienes acceso total.</p>
 
-        <div class="action-buttons">
-            <a class="btn primary-btn" href="{% url 'fx_crear' 'INSTITUCIONAL' %}">Crear FX institucional</a>
-            <a class="btn primary-btn" href="{% url 'programa_crear' %}">Crear Programa</a>
+        <div class="retro-actions">
+            <a class="retro-btn retro-btn-small" href="{% url 'fx_crear' 'INSTITUCIONAL' %}">
+                Crear FX institucional
+            </a>
+
+            <a class="retro-btn retro-btn-small" href="{% url 'programa_crear' %}">
+                Crear Programa
+            </a>
         </div>
     </section>
     {% endif %}
 
-    <!-- FX institucionales -->
-    <section class="panel">
-        <h3 class="panel-title">FX institucionales</h3>
+    <!-- FX INSTITUCIONALES -->
+    <section class="retro-section">
+        <h3 class="retro-subtitle">FX institucionales</h3>
 
-        <div class="fx-grid">
+        <div class="retro-fx-grid">
             {% for fx in fx_institucionales %}
-            <button class="fx-btn"
-                style="background: {{ fx.color_boton|default:'#444' }};"
+            <button class="retro-fx-btn"
+                style="background-color: {{ fx.color_boton|default:'#E76219' }};"
                 data-file-url="{{ fx.archivo.url }}"
                 data-volume="{{ fx.volumen_default }}"
-                onclick="playFx(this.dataset.fileUrl, parseFloat(this.dataset.volume || '1'))"
-                title="{{ fx.nombre }}">
+                onclick="playFx(this.dataset.fileUrl, parseFloat(this.dataset.volume || '1'))">
                 {{ fx.nombre }}
             </button>
             {% empty %}
-            <p class="empty">No hay FX institucionales.</p>
+            <p class="retro-empty">No hay FX institucionales.</p>
             {% endfor %}
         </div>
     </section>
 
-    <!-- FX propios -->
-    <section class="panel">
-        <h3 class="panel-title">Mis FX propios</h3>
+    <!-- FX PROPIOS -->
+    <section class="retro-section">
+        <h3 class="retro-subtitle">Mis FX propios</h3>
 
-        <div class="fx-grid">
+        <div class="retro-fx-grid">
             {% for fx in fx_propios %}
-            <div class="fx-item">
-                <button class="fx-btn"
+            <div class="retro-fx-item">
+                <button class="retro-fx-btn"
                     data-file-url="{{ fx.archivo.url }}"
                     data-volume="{{ fx.volumen_default }}"
                     onclick="playFx(this.dataset.fileUrl, parseFloat(this.dataset.volume || '1'))">
                     {{ fx.nombre }}
                 </button>
-
-                <a class="fx-edit" href="{% url 'fx_editar' fx.id %}">Editar</a>
+                <a class="retro-link" href="{% url 'fx_editar' fx.id %}">Editar</a>
             </div>
             {% empty %}
-            <p class="empty">Aún no tienes FX propios.</p>
+            <p class="retro-empty">Aún no tienes FX propios.</p>
             {% endfor %}
         </div>
     </section>
 
-    <!-- Programas asignados -->
-    <section class="panel">
-        <h3 class="panel-title">Programas asignados</h3>
+    <!-- PROGRAMAS -->
+    <section class="retro-section">
+        <h3 class="retro-subtitle">Programas asignados</h3>
 
-        <ul class="program-list">
+        <ul class="retro-program-list">
             {% for p in programas %}
-            <li><a class="program-link" href="{% url 'programa_detalle' p.id %}">{{ p.nombre }}</a></li>
+            <li>
+                <a class="retro-link" href="{% url 'programa_detalle' p.id %}">
+                    {{ p.nombre }}
+                </a>
+            </li>
             {% empty %}
-            <li class="empty">No tienes programas asignados.</li>
+            <li class="retro-empty">No tienes programas asignados.</li>
             {% endfor %}
         </ul>
     </section>
@@ -76,16 +83,17 @@
 </main>
 
 <script>
-    let currentAudio = null;
-    function playFx(url, volume = 1.0) {
-        if (currentAudio) {
-            currentAudio.pause();
-            currentAudio.currentTime = 0;
-        }
-        currentAudio = new Audio(url);
-        currentAudio.volume = Math.max(0, Math.min(1, volume));
-        currentAudio.play();
+let currentAudio = null;
+
+function playFx(url, volume = 1.0) {
+    if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
     }
+    currentAudio = new Audio(url);
+    currentAudio.volume = Math.max(0, Math.min(1, volume));
+    currentAudio.play();
+}
 </script>
 
 {% endblock %}
