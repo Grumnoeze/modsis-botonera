@@ -145,10 +145,11 @@
     </div>
 
 {% if es_jefe or user in programa.operadores.all %}
-  <a class="retro-btn retro-btn-small"
-     href="{% url 'fx_crear' 'PROGRAMA' programa.id %}">
-     Crear FX de programa
+    <a class="retro-btn retro-btn-small"
+    href="{% url 'fx_crear_programa' 'PROGRAMA' programa.id %}">
+    Crear FX de programa
   </a>
+
 {% endif %}
 
 <section class="retro-section">
