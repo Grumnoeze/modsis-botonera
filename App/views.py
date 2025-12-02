@@ -119,8 +119,18 @@ def programa_detalle(request, programa_id):
         return HttpResponseForbidden("No tienes acceso a este programa.")
 
     fx_programa = FX.objects.filter(scope=FX.Scope.PROGRAMA, programa=programa, activo=True)
-    return render(request, 'pages/programa.html', {'programa': programa, 'fx_programa': fx_programa})
-    
+    fx_institucionales = FX.objects.filter(scope=FX.Scope.INSTITUCIONAL, activo=True)
+
+    return render(request, 'pages/programa.html', {
+        'programa': programa,
+        'fx_programa': fx_programa,
+        'fx_institucionales': fx_institucionales,
+        'operadores': programa.operadores.all(),
+        'productores': programa.productores.all(),
+        'es_jefe': es_jefe(request.user),
+    })
+
+
 @login_required
 def programa_crear(request):
     # Solo el JEFE puede crear programas
@@ -139,6 +149,39 @@ def programa_crear(request):
         return redirect("dashboard")
 
     return render(request, "pages/programa_form.html")
+
+@login_required
+def programa_editar(request, programa_id):
+    programa = get_object_or_404(Programa, id=programa_id)
+
+    # Solo el JEFE puede editar programas
+    if not es_jefe(request.user):
+        return HttpResponseForbidden("Solo el jefe puede editar programas.")
+
+    if request.method == "POST":
+        programa.nombre = request.POST.get("nombre", programa.nombre)
+        programa.descripcion = request.POST.get("descripcion", programa.descripcion)
+
+        # IDs de operadores y productores seleccionados en el formulario
+        operadores_ids = request.POST.getlist("operadores")
+        productores_ids = request.POST.getlist("productores")
+
+        programa.operadores.set(User.objects.filter(id__in=operadores_ids))
+        programa.productores.set(User.objects.filter(id__in=productores_ids))
+
+        programa.save()
+        return redirect("programa_detalle", programa_id=programa.id)
+
+    # Filtrar usuarios por rol
+    operadores = User.objects.filter(perfilusuario__rol=Rol.OPERADOR)
+    productores = User.objects.filter(perfilusuario__rol=Rol.PRODUCTOR)
+
+    return render(request, "pages/programa_form.html", {
+        "programa": programa,
+        "operadores": operadores,
+        "productores": productores
+    })
+
 
 @login_required
 def fx_crear(request, scope, programa_id=None):
@@ -173,7 +216,6 @@ def fx_crear(request, scope, programa_id=None):
         return redirect('dashboard')
 
     return render(request, 'pages/fx_form.html', {'scope': scope, 'programa_id': programa_id})
-
 
 @login_required
 def fx_editar(request, fx_id):

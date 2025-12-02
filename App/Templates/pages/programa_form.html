@@ -2,19 +2,40 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Crear Programa</title>
+  <title>{% if programa %}Editar Programa{% else %}Crear Programa{% endif %}</title>
 </head>
 <body>
-  <h2>Crear nuevo programa</h2>
+  <h2>{% if programa %}Editar Programa{% else %}Crear Programa{% endif %}</h2>
   <form method="post">
     {% csrf_token %}
     <label>Nombre</label>
-    <input type="text" name="nombre" required>
+    <input type="text" name="nombre" value="{{ programa.nombre|default:'' }}" required>
 
     <label>Descripción</label>
-    <textarea name="descripcion"></textarea>
+    <textarea name="descripcion">{{ programa.descripcion|default:'' }}</textarea>
 
-    <button type="submit">Crear</button>
+    {% if programa %}
+    <h3>Asignar Operadores</h3>
+    {% for u in operadores %}
+      <label>
+        <input type="checkbox" name="operadores" value="{{ u.id }}"
+              {% if u in programa.operadores.all %}checked{% endif %}>
+        {{ u.username }}
+      </label><br>
+    {% endfor %}
+
+    <h3>Asignar Productores</h3>
+    {% for u in productores %}
+      <label>
+        <input type="checkbox" name="productores" value="{{ u.id }}"
+              {% if u in programa.productores.all %}checked{% endif %}>
+        {{ u.username }}
+      </label><br>
+    {% endfor %}
+  {% endif %}
+
+
+    <button type="submit">{% if programa %}Guardar{% else %}Crear{% endif %}</button>
   </form>
 </body>
 </html>

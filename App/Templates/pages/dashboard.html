@@ -30,10 +30,10 @@
         <div class="retro-fx-grid">
             {% for fx in fx_institucionales %}
             <button class="retro-fx-btn"
-                style="background-color: {{ fx.color_boton|default:'#E76219' }};"
+                data-color="{{ fx.color_boton|default:'#E76219' }}"
                 data-file-url="{{ fx.archivo.url }}"
                 data-volume="{{ fx.volumen_default }}"
-                onclick="playFx(this.dataset.fileUrl, parseFloat(this.dataset.volume || '1'))">
+                onclick="playFx(this.dataset.fileUrl, parseFloat(this.dataset.volume || '1')); this.style.backgroundColor = this.dataset.color;">
                 {{ fx.nombre }}
             </button>
             {% empty %}

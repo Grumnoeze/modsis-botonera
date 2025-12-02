@@ -1,27 +1,81 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <title>Programa: {{ programa.nombre }}</title>
 </head>
+
 <body>
   <h2>{{ programa.nombre }}</h2>
-  <p>{{ programa.descripcion }}</p>
+<p>{{ programa.descripcion }}</p>
 
-  <div>
+{% if es_jefe or user in programa.operadores.all %}
+  <a class="retro-btn retro-btn-small"
+     href="{% url 'fx_crear' 'PROGRAMA' programa.id %}">
+     Crear FX de programa
+  </a>
+{% endif %}
+
+<section class="retro-section">
+  <h3 class="retro-subtitle">FX institucionales</h3>
+  <div class="retro-fx-grid">
+    {% for fx in fx_institucionales %}
+      <button class="retro-fx-btn"
+              style="background-color: {{ fx.color_boton|default:'#E76219' }};"
+              data-file-url="{{ fx.archivo.url }}"
+              data-volume="{{ fx.volumen_default }}"
+              onclick="playFx(this.dataset.fileUrl, parseFloat(this.dataset.volume || '1'))">
+        {{ fx.nombre }}
+      </button>
+    {% empty %}
+      <p class="retro-empty">No hay FX institucionales.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="retro-section">
+  <h3 class="retro-subtitle">FX del programa</h3>
+  <div class="retro-fx-grid">
     {% for fx in fx_programa %}
-      <button onclick="playFx('{{ fx.archivo.url }}', '{{ fx.volumen_default }}')">{{ fx.nombre }}</button>
-      {% if user in programa.operadores.all or es_jefe %}
+      <button class="retro-fx-btn"
+              style="background-color: {{ fx.color_boton|default:'#E76219' }};"
+              data-file-url="{{ fx.archivo.url }}"
+              data-volume="{{ fx.volumen_default }}"
+              onclick="playFx(this.dataset.fileUrl, parseFloat(this.dataset.volume || '1'))">
+        {{ fx.nombre }}
+      </button>
+      {% if es_jefe or user in programa.operadores.all %}
         <a href="{% url 'fx_editar' fx.id %}">Editar</a>
       {% endif %}
     {% empty %}
-      <p>No hay FX para este programa.</p>
+      <p class="retro-empty">No hay FX de este programa.</p>
     {% endfor %}
   </div>
+</section>
+
+  <h3>Operadores asignados</h3>
+  <ul>
+    {% for op in operadores %}
+    <li>{{ op.username }}</li>
+    {% empty %}
+    <li>No hay operadores asignados.</li>
+    {% endfor %}
+  </ul>
+
+  <h3>Productores asignados</h3>
+  <ul>
+    {% for prod in productores %}
+    <li>{{ prod.username }}</li>
+    {% empty %}
+    <li>No hay productores asignados.</li>
+    {% endfor %}
+  </ul>
+
 
   <script>
     let currentAudio = null;
-    function playFx(url, volume=1.0) {
+    function playFx(url, volume = 1.0) {
       if (currentAudio) { currentAudio.pause(); currentAudio.currentTime = 0; }
       currentAudio = new Audio(url);
       currentAudio.volume = Math.max(0, Math.min(1, volume));
@@ -29,4 +83,5 @@
     }
   </script>
 </body>
+
 </html>
