@@ -5,7 +5,7 @@ from .views import (
     login_view, logout_view, dashboard,
     programa_detalle, fx_crear, fx_editar, 
     fx_toggle_activo, reproducir_fx, registrar_usuario,
-    crear_usuario_manual, perfil_view, programa_crear
+    crear_usuario_manual, perfil_view, programa_crear, programa_editar
 )
 from .models import FX
 
@@ -25,5 +25,7 @@ urlpatterns = [
     path('fx/<int:fx_id>/editar/', fx_editar, name='fx_editar'),
     path('fx/<int:fx_id>/toggle/', fx_toggle_activo, name='fx_toggle'),
     path('fx/<int:fx_id>/play/', reproducir_fx, name='fx_play'),
+
+    path('programa/<int:programa_id>/editar/', programa_editar, name='programa_editar'),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
