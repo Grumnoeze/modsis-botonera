@@ -76,8 +76,6 @@
             {% endfor %}
         </div>
     </section>
-
-    <!-- PROGRAMAS -->
     <section class="retro-section">
         <h3 class="retro-subtitle">
             {% if es_jefe %}
@@ -87,7 +85,7 @@
             {% endif %}
         </h3>
 
-        <ul class="retro-program-list">
+        <ul class="retro-program-list" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 30px;">
             {% for p in programas %}
             <li>
                 <a class="retro-link" href="{% url 'programa_detalle' p.id %}">
