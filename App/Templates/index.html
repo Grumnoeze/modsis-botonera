@@ -9,9 +9,44 @@
 </head>
 <body class="layout">
 
-    <header class="header">
-        <h1 class="title">Botonera FX</h1>
-    </header>
+<header class="retro-header">
+
+    <h1 class="retro-title">Botonera FX</h1>
+
+    <nav class="retro-nav">
+
+        {% if user.is_authenticated %}
+
+            <!-- Disponible para todos los roles -->
+            <a class="retro-link" href="{% url 'dashboard' %}">Dashboard</a>
+            <a class="retro-link" href="{% url 'perfil' %}">Perfil</a>
+
+            {% if perfil.rol == 'jefe' %}
+                <!-- Solo Jefe -->
+                <a class="retro-link" href="{% url 'registrar' %}">Registrar usuario</a>
+                <a class="retro-link" href="{% url 'crear_usuario_manual' %}">Carga manual</a>
+                <a class="retro-link" href="{% url 'fx_crear' 'global' %}">Crear FX Global</a>
+
+            {% elif perfil.rol == 'operador' %}
+                <!-- Operador puede (según tu diseño) crear FX global -->
+                <a class="retro-link" href="{% url 'fx_crear' 'global' %}">Crear FX Global</a>
+
+            {% else %}
+                <!-- Productor no tiene accesos extra -->
+            {% endif %}
+
+            <a class="retro-link danger" href="{% url 'logout' %}">Cerrar sesión</a>
+
+        {% else %}
+
+            <!-- No autenticado -->
+            <a class="retro-link" href="{% url 'login' %}">Iniciar sesión</a>
+
+        {% endif %}
+    </nav>
+
+</header>
+
     {% block contenido %}
     <main class="main-menu">
         <nav class="nav-menu">

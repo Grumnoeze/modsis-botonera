@@ -1,17 +1,99 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrar Usuario</title>
-</head>
-<body>
-    <h2>Registrar nuevo usuario</h2>
-    <form method="post">
+{% extends "index.html" %}
+{% load static %}
+
+{% block contenido %}
+<div class="register-container">
+
+    <h2 class="retro-title">Registrar nuevo usuario</h2>
+
+    <form class="retro-form" method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Registrar</button>
+        <button type="submit" class="retro-btn">Registrar</button>
     </form>
-    <a href="{% url 'perfil' %}">Volver al perfil</a>
-</body>
-</html>
+
+    <a href="{% url 'perfil' %}" class="retro-back">⟵ Volver al perfil</a>
+
+</div>
+
+<style>
+    body {
+        background: #562717; /* marrón retro */
+        font-family: 'Courier New', monospace;
+        color: #FDDCA9;
+        margin: 0;
+        padding: 0;
+    }
+
+    .register-container {
+        max-width: 430px;
+        background: #3a1c0d;
+        margin: 80px auto;
+        padding: 30px;
+        border: 3px solid #E76219;
+        border-radius: 8px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.6);
+        text-align: center;
+    }
+
+    .retro-title {
+        color: #FEA712;
+        margin-bottom: 15px;
+        text-shadow: 2px 2px #000;
+    }
+
+    .retro-form {
+        text-align: left;
+        color: #FDDCA9;
+    }
+
+    .retro-form input,
+    .retro-form select {
+        width: 100%;
+        padding: 10px;
+        margin: 8px 0 15px 0;
+        background: #5a2d1e;
+        border: 2px solid #C21717;
+        color: #FDDCA9;
+        border-radius: 4px;
+        font-family: inherit;
+    }
+
+    .retro-form input:focus {
+        outline: none;
+        border-color: #FEA712;
+    }
+
+    .retro-btn {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        background: #C21717;
+        color: #FDDCA9;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+        border-radius: 4px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .retro-btn:hover {
+        background: #E76219;
+    }
+
+    .retro-back {
+        display: inline-block;
+        margin-top: 20px;
+        color: #FEA712;
+        text-decoration: none;
+        font-size: 15px;
+    }
+
+    .retro-back:hover {
+        color: #FDDCA9;
+    }
+
+</style>
+
+{% endblock %}
