@@ -1,16 +1,25 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
+<head> 
+    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
-<body>
-    <h2>Botonera FX</h2>
-    <a href="{% url 'login' %}">Login</a>
-    <a href="{% url 'registrar' %}">Registrar usuario</a>
-    <a href="{% url 'perfil' %}">Perfil</a>
+<body class="layout">
 
-    <!-- CONTRASEÑAAAAA de Brunos nLXX.8RD6:S-w5X -->
+    <header class="header">
+        <h1 class="title">Botonera FX</h1>
+    </header>
+    {% block contenido %}
+    <main class="main-menu">
+        <nav class="nav-menu">
+            <a class="btn" href="{% url 'login' %}">Ingresar</a>
+            <a class="btn" href="{% url 'registrar' %}">Registrar usuario</a>
+            <a class="btn" href="{% url 'perfil' %}">Perfil</a>
+        </nav>
+    </main>
+    {% endblock %}
 </body>
 </html>

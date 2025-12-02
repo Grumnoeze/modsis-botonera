@@ -1,15 +1,30 @@
+{% extends "index.html" %}
+{% load static %}
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Botonera FX</title>
 </head>
-<body>
-    <form action="" method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Iniciar sesion</button> 
-    </form>
+{% block contenido %}
+<body class="layout">
+    <main class="form-container">
+        <h2 class="form-title">Iniciar sesión</h2>
+
+        <form class="form-card" action="" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <button class="btn primary-btn" type="submit">Ingresar</button>
+
+            <p class="form-alt">
+                ¿No tenés cuenta?
+                <a href="{% url 'registrar' %}">Registrar usuario</a>
+            </p>
+        </form>
+    </main>
 </body>
+{% endblock %}
 </html>

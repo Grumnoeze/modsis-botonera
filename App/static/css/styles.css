@@ -1,0 +1,248 @@
+/* RESET BÁSICO */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+body.layout {
+    background: #1b1b1b;
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* HEADER */
+.header {
+    padding: 40px 0 20px;
+}
+
+.title {
+    font-size: 2.4rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* MENÚ PRINCIPAL */
+.main-menu {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+    width: 100%;
+}
+
+.nav-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 90%;
+    max-width: 350px;
+}
+
+/* BOTONES */
+.btn {
+    display: block;
+    background: #292929;
+    color: #fff;
+    padding: 14px 20px;
+    text-align: center;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: 0.25s;
+    border: 2px solid #444;
+}
+
+.btn:hover {
+    background: #444;
+    transform: translateY(-2px);
+}
+
+/* Responsivo */
+@media (max-width: 480px) {
+    .title {
+        font-size: 2rem;
+    }
+}
+
+/* FORMULARIOS */
+.form-container {
+    margin-top: 80px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-title {
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.form-card {
+    background: #222;
+    padding: 30px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 380px;
+    border: 2px solid #333;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Campos generados por Django */
+.form-card p {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-card label {
+    font-size: 0.95rem;
+}
+
+.form-card input {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #444;
+    background: #111;
+    color: #eee;
+}
+
+/* Botón principal */
+.primary-btn {
+    background: #3b82f6;
+    border-color: #3b82f6;
+}
+
+.primary-btn:hover {
+    background: #1d4ed8;
+}
+
+/* Enlace alternativo */
+.form-alt {
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.form-alt a {
+    color: #76a7ff;
+    text-decoration: none;
+}
+
+.form-alt a:hover {
+    text-decoration: underline;
+}
+
+/* DASHBOARD */
+.dashboard {
+    padding: 20px;
+    width: 100%;
+    max-width: 900px;
+    margin: auto;
+}
+
+.dashboard-title {
+    font-size: 2rem;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+/* PANEL GENÉRICO */
+.panel {
+    background: #202020;
+    padding: 25px;
+    border-radius: 14px;
+    margin-bottom: 30px;
+    border: 2px solid #2d2d2d;
+}
+
+.panel-title {
+    font-size: 1.4rem;
+    margin-bottom: 20px;
+}
+
+/* MENSAJES */
+.info-panel {
+    background: #1e2a3a;
+    border-color: #2f4c77;
+}
+
+.info-text {
+    margin-bottom: 15px;
+}
+
+.empty {
+    color: #aaa;
+    font-style: italic;
+    padding-left: 5px;
+}
+
+/* BOTONES DE ACCIÓN */
+.action-buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+/* FX GRID */
+.fx-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 15px;
+}
+
+.fx-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.fx-edit {
+    text-align: center;
+    display: block;
+    color: #76a7ff;
+    font-size: 0.9rem;
+}
+
+.fx-edit:hover {
+    text-decoration: underline;
+}
+
+/* BOTONES DE FX */
+.fx-btn {
+    border: 2px solid #333;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.2s;
+    font-weight: 600;
+    color: #000;
+    width: 100%;
+    text-transform: uppercase;
+}
+
+.fx-btn:hover {
+    transform: translateY(-3px);
+}
+
+/* PROGRAMAS */
+.program-list {
+    list-style: none;
+}
+
+.program-link {
+    color: #76a7ff;
+    font-size: 1.05rem;
+    text-decoration: none;
+}
+
+.program-link:hover {
+    text-decoration: underline;
+}
