@@ -1,134 +1,40 @@
-{% extends "index.html" %}
-{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <title>{% if programa %}Editar Programa{% else %}Crear Programa{% endif %}</title>
 </head>
-
 <body>
-  {% block contenido %}
-    <style>
-    :root {
-      --retro-dark: #562717;
-      --retro-red: #C21717;
-      --retro-orange: #E76219;
-      --retro-yellow: #FEA712;
-      --retro-beige: #FDDCA9;
-    }
+  <h2>{% if programa %}Editar Programa{% else %}Crear Programa{% endif %}</h2>
+  <form method="post">
+    {% csrf_token %}
+    <label>Nombre</label>
+    <input type="text" name="nombre" value="{{ programa.nombre|default:'' }}" required>
 
-    body {
-      font-family: 'Courier New', monospace;
-      background: var(--retro-dark);
-      color: var(--retro-beige);
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: center;
-    }
+    <label>Descripción</label>
+    <textarea name="descripcion">{{ programa.descripcion|default:'' }}</textarea>
 
-    .container {
-      width: 100%;
-      max-width: 500px;
-      background: var(--retro-beige);
-      padding: 25px;
-      margin-top: 50px;
-      border: 4px solid var(--retro-red);
-      border-radius: 6px;
-      box-shadow: 0 0 10px #00000055;
-      color: #000;
-    }
+    {% if programa %}
+      <h3>Asignar Operadores</h3>
+      {% for u in usuarios %}
+        <label>
+          <input type="checkbox" name="operadores" value="{{ u.id }}"
+                 {% if u in programa.operadores.all %}checked{% endif %}>
+          {{ u.username }} ({{ u.perfilusuario.rol }})
+        </label><br>
+      {% endfor %}
 
-    h2 {
-      text-align: center;
-      background: var(--retro-red);
-      padding: 10px;
-      border-radius: 4px;
-      color: white;
-      margin-top: 0;
-      margin-bottom: 20px;
-      border: 2px solid #000;
-    }
+      <h3>Asignar Productores</h3>
+      {% for u in usuarios %}
+        <label>
+          <input type="checkbox" name="productores" value="{{ u.id }}"
+                 {% if u in programa.productores.all %}checked{% endif %}>
+          {{ u.username }} ({{ u.perfilusuario.rol }})
+        </label><br>
+      {% endfor %}
+    {% endif %}
 
-    label {
-      display: block;
-      margin-top: 12px;
-      font-weight: bold;
-      color: var(--retro-dark);
-      letter-spacing: 0.5px;
-    }
-
-    input[type="text"],
-    textarea {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border-radius: 4px;
-      border: 2px solid var(--retro-dark);
-      background: #ffffffd9;
-      font-family: inherit;
-      font-size: 15px;
-      outline: none;
-    }
-
-    textarea {
-      height: 120px;
-      resize: vertical;
-    }
-
-    button {
-      width: 100%;
-      margin-top: 20px;
-      padding: 12px;
-      border: none;
-      border-radius: 4px;
-      background: var(--retro-red);
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      border: 2px solid #000;
-      transition: 0.2s;
-    }
-
-    button:hover {
-      background: var(--retro-orange);
-      transform: scale(1.02);
-    }
-
-    .volver {
-      display: block;
-      margin-top: 15px;
-      text-align: center;
-      text-decoration: none;
-      color: var(--retro-dark);
-      font-weight: bold;
-    }
-
-    .volver:hover {
-      text-decoration: underline;
-    }
-  </style>
-  <div class="container">
-    <h2>Crear Programa</h2>
-
-    <form method="post">
-      {% csrf_token %}
-
-      <label>Nombre del Programa</label>
-      <input type="text" name="nombre" required>
-
-      <label>Descripción</label>
-      <textarea name="descripcion"></textarea>
-
-      <button type="submit">Crear Programa</button>
-    </form>
-
-    <a href="{% url 'dashboard' %}" class="volver">Volver al panel</a>
-  </div>
+    <button type="submit">{% if programa %}Guardar{% else %}Crear{% endif %}</button>
+  </form>
 </body>
-{% endblock %}
 </html>

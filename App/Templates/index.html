@@ -27,7 +27,6 @@
                 <a class="retro-link" href="{% url 'crear_usuario_manual' %}">Carga manual</a>
                 <a class="retro-link" href="{% url 'fx_crear' 'global' %}">Crear FX Global</a>
 
-
             {% elif perfil.rol == 'operador' %}
                 <!-- Operador puede (según tu diseño) crear FX global -->
                 <a class="retro-link" href="{% url 'fx_crear' 'global' %}">Crear FX Global</a>
