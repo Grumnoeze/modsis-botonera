@@ -144,53 +144,49 @@
       {{ programa.descripcion }}
     </div>
 
-    {% if es_jefe or user in programa.operadores.all %}
-    <a class="retro-btn-small" href="{% url 'fx_crear_programa' 'PROGRAMA' programa.id %}">
-      ➤ Crear FX de este programa
-    </a>
-    {% endif %}
+{% if es_jefe or user in programa.operadores.all %}
+  <a class="retro-btn retro-btn-small"
+     href="{% url 'fx_crear' 'PROGRAMA' programa.id %}">
+     Crear FX de programa
+  </a>
+{% endif %}
 
-    <!-- FX institucionales -->
-    <section class="retro-section">
-      <h3 class="retro-subtitle">FX institucionales</h3>
-      <div class="retro-fx-grid">
-        {% for fx in fx_institucionales %}
-        <button class="retro-fx-btn" style="background-color: {{ fx.color_boton|default:'#E76219' }};"
-          data-file-url="{{ fx.archivo.url }}" data-volume="{{ fx.volumen_default }}"
-          onclick="playFx(this.dataset.fileUrl, parseFloat(this.dataset.volume || '1'))">
-          {{ fx.nombre }}
-        </button>
-        {% empty %}
-        <p class="retro-empty">No hay FX institucionales.</p>
-        {% endfor %}
-      </div>
-    </section>
+<section class="retro-section">
+  <h3 class="retro-subtitle">FX institucionales</h3>
+  <div class="retro-fx-grid">
+    {% for fx in fx_institucionales %}
+      <button class="retro-fx-btn"
+              style="background-color: {{ fx.color_boton|default:'#E76219' }};"
+              data-file-url="{{ fx.archivo.url }}"
+              data-volume="{{ fx.volumen_default }}"
+              onclick="playFx(this.dataset.fileUrl, parseFloat(this.dataset.volume || '1'))">
+        {{ fx.nombre }}
+      </button>
+    {% empty %}
+      <p class="retro-empty">No hay FX institucionales.</p>
+    {% endfor %}
+  </div>
+</section>
 
-    <!-- FX del programa -->
-    <section class="retro-section" style="margin-bottom: 15px;">
-      <h3 class="retro-subtitle">FX del programa</h3>
-      <div class="retro-fx-grid">
-        {% for fx in fx_programa %}
-
-        <div>
-          <button class="retro-fx-btn" style="background-color: {{ fx.color_boton|default:'#E76219' }};"
-            data-file-url="{{ fx.archivo.url }}" data-volume="{{ fx.volumen_default }}"
-            onclick="playFx(this.dataset.fileUrl, parseFloat(this.dataset.volume || '1'))">
-            {{ fx.nombre }}
-          </button>
-
-          {% if es_jefe or user in programa.operadores.all %}
-          <a href="{% url 'fx_editar' fx.id %}" class="retro-btn-small" style="margin-top:5px; display:block;">
-            Editar FX
-          </a>
-          {% endif %}
-        </div>
-
-        {% empty %}
-        <p class="retro-empty">No hay FX asignados a este programa.</p>
-        {% endfor %}
-      </div>
-    </section>
+<section class="retro-section">
+  <h3 class="retro-subtitle">FX del programa</h3>
+  <div class="retro-fx-grid">
+    {% for fx in fx_programa %}
+      <button class="retro-fx-btn"
+              style="background-color: {{ fx.color_boton|default:'#E76219' }};"
+              data-file-url="{{ fx.archivo.url }}"
+              data-volume="{{ fx.volumen_default }}"
+              onclick="playFx(this.dataset.fileUrl, parseFloat(this.dataset.volume || '1'))">
+        {{ fx.nombre }}
+      </button>
+      {% if es_jefe or user in programa.operadores.all %}
+        <a href="{% url 'fx_editar' fx.id %}">Editar</a>
+      {% endif %}
+    {% empty %}
+      <p class="retro-empty">No hay FX de este programa.</p>
+    {% endfor %}
+  </div>
+</section>
 
     <!-- Operadores -->
     <h3 class="retro-subtitle">Operadores asignados</h3>
