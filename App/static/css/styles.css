@@ -7,6 +7,15 @@
     --retro-beige: #FDDCA9;
 }
 
+@font-face {
+    font-family: 'TTNorms';
+    src: url(../font/TTNormsProVariable.ttf);
+}
+
+h1, h2, h3, h4, h5, h6, p, a, span, input{
+    font-family: 'TTNorms', sans-serif !important;
+}
+
 *{
     margin: 0;
     padding: 0;

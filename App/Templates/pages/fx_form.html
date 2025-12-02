@@ -1,28 +1,123 @@
+{% extends "index.html" %}
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>{% if fx %}Editar FX{% else %}Crear FX{% endif %}</title>
+    <meta charset="UTF-8">
+    <title>{% if fx %}Editar FX{% else %}Crear FX{% endif %}</title>
 </head>
 <body>
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <label>Nombre</label>
-    <input type="text" name="nombre" value="{{ fx.nombre|default:'' }}" required>
+  {% block contenido %}
+      <style>
+        body {
+            background: #2a1206;
+            font-family: 'Courier New', monospace;
+            color: #E7C08A;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
 
-    <label>Archivo (WAV/MP3)</label>
-    <input type="file" name="archivo" {% if not fx %}required{% endif %}>
+        .fx-container {
+            background: #3b1d0f;
+            padding: 25px 35px;
+            border: 4px solid #E76219;
+            border-radius: 10px;
+            box-shadow: 0 0 18px rgba(0, 0, 0, 0.7);
+            width: 420px;
+        }
 
-    <label>Color del botón</label>
-    <input type="text" name="color_boton" value="{{ fx.color_boton|default:'#ddd' }}">
+        .fx-title {
+            text-align: center;
+            font-size: 22px;
+            color: #FEA712;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px #000;
+            text-transform: uppercase;
+        }
 
-    <label>Tecla rápida</label>
-    <input type="text" name="tecla_rapida" value="{{ fx.tecla_rapida|default:'' }}">
+        label {
+            display: block;
+            margin-top: 12px;
+            margin-bottom: 5px;
+            font-size: 15px;
+            color: #FDDCA9;
+        }
 
-    <label>Volumen por defecto</label>
-    <input type="number" step="0.01" min="0" max="1" name="volumen_default" value="{{ fx.volumen_default|default:'1.0' }}">
+        input[type="text"],
+        input[type="number"],
+        input[type="file"] {
+            width: 100%;
+            padding: 8px;
+            background: #5c2a1b;
+            border: 2px solid #C21717;
+            border-radius: 5px;
+            color: #FFD9AA;
+            font-size: 14px;
+        }
 
-    <button type="submit">{% if fx %}Guardar{% else %}Crear{% endif %}</button>
-  </form>
+        input:focus {
+            outline: none;
+            border-color: #FEA712;
+            background: #6f3321;
+        }
+
+        .submit-btn {
+            margin-top: 20px;
+            width: 100%;
+            padding: 10px;
+            background: #562717;
+            border: 3px solid #C21717;
+            border-radius: 6px;
+            color: #FDDCA9;
+            font-size: 17px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: 0.25s;
+        }
+
+        .submit-btn:hover {
+            background: #E76219;
+            color: #000;
+            border-color: #FEA712;
+        }
+    </style>
+
+    <div class="fx-container">
+
+        <h2 class="fx-title">
+            {% if fx %}Editar FX{% else %}Crear Nuevo FX{% endif %}
+        </h2>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <label>Nombre</label>
+            <input type="text" name="nombre" value="{{ fx.nombre|default:'' }}" required>
+
+            <label>Archivo (WAV/MP3)</label>
+            <input type="file" name="archivo" {% if not fx %}required{% endif %}>
+
+            <label>Color del botón</label>
+            <input type="color" name="color_boton" value="{{ fx.color_boton|default:'#ddd' }}">
+
+            <label>Tecla rápida</label>
+            <input type="text" name="tecla_rapida" value="{{ fx.tecla_rapida|default:'' }}">
+
+            <label>Volumen por defecto</label>
+            <input type="number" step="0.01" min="0" max="1" name="volumen_default"
+                value="{{ fx.volumen_default|default:'1.0' }}">
+
+            <button class="submit-btn" type="submit">
+                {% if fx %}Guardar Cambios{% else %}Crear FX{% endif %}
+            </button>
+        </form>
+
+    </div>
+{% endblock %}
 </body>
 </html>
