@@ -1,18 +1,113 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "index.html" %}
+{% load static %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil</title>
-</head>
+{% block contenido %}
 
-<body>
-    <h2>Bienvenido, {{ user.username }}</h2>
-    <p>Rol: {{ perfil.rol }}</p>
-    <a href="{% url 'logout' %}">Cerrar sesión</a>
-    <a href="{% url 'registrar' %}">Registrar nuevo usuario</a>
+<div class="perfil-wrapper">
 
-</body>
+    <div class="perfil-card">
+        <h2 class="perfil-title">Bienvenido, {{ user.username }}</h2>
 
-</html>
+        <p class="perfil-item"><strong>Rol:</strong> <span class="perfil-rol">{{ perfil.rol }}</span></p>
+        <p class="perfil-item"><strong>Email:</strong> {{ user.email }}</p>
+        <p class="perfil-item"><strong>Último login:</strong> {{ user.last_login }}</p>
+
+        <hr class="retro-divider">
+
+        <div class="perfil-actions">
+
+            <a href="{% url 'dashboard' %}" class="retro-btn action">Ir al Dashboard</a>
+
+            {% if user.is_superuser %}
+            <a href="{% url 'registrar' %}" class="retro-btn action">Registrar nuevo usuario</a>
+            {% endif %}
+
+            <a href="{% url 'logout' %}" class="retro-btn danger">Cerrar sesión</a>
+
+        </div>
+    </div>
+
+</div>
+
+
+<style>
+    body {
+        background: #562717;
+        font-family: 'Courier New', monospace;
+        color: #FDDCA9;
+        margin: 0;
+        padding: 0;
+    }
+
+    .perfil-wrapper {
+        display: flex;
+        justify-content: center;
+        margin-top: 80px;
+    }
+
+    .perfil-card {
+        width: 420px;
+        background: #3a1c0d;
+        padding: 30px;
+        border: 3px solid #E76219;
+        border-radius: 8px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.6);
+        text-align: center;
+    }
+
+    .perfil-title {
+        color: #FEA712;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px #000;
+    }
+
+    .perfil-item {
+        font-size: 16px;
+        margin: 10px 0;
+    }
+
+    .perfil-rol {
+        color: #FEA712;
+        font-weight: bold;
+    }
+
+    .retro-divider {
+        border: none;
+        border-top: 2px solid #C21717;
+        margin: 25px 0;
+    }
+
+    .perfil-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .retro-btn {
+        display: block;
+        padding: 12px;
+        text-decoration: none;
+        font-weight: bold;
+        text-transform: uppercase;
+        border-radius: 4px;
+        letter-spacing: 1px;
+        background: #C21717;
+        color: #FDDCA9;
+        border: 2px solid #FDDCA9;
+    }
+
+    .retro-btn:hover {
+        background: #E76219;
+    }
+
+    .retro-btn.danger {
+        background: #8b1a1a;
+        border-color: #FFB5A5;
+    }
+
+    .retro-btn.danger:hover {
+        background: #C21717;
+    }
+</style>
+
+{% endblock %}

@@ -7,6 +7,12 @@
     --retro-beige: #FDDCA9;
 }
 
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body{
     background: var(--retro-dark);
 }
@@ -32,6 +38,7 @@ body{
 
 /* ======== CONTENEDOR ======== */
 .retro-login-container {
+    padding: 80px 0;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -165,3 +172,171 @@ body{
     display: flex;
     gap: 15px
 }
+
+/* ======= ESTRUCTURA ======= */
+.retro-dashboard {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 30px;
+}
+
+/* ======= TITULOS ======= */
+.retro-title-large {
+    font-size: 2.4rem;
+    color: var(--retro-yellow);
+    text-shadow: 3px 3px 0 #000;
+    margin-bottom: 25px;
+}
+
+.retro-subtitle {
+    font-size: 1.6rem;
+    color: var(--retro-orange);
+    text-shadow: 2px 2px 0 #000;
+    margin-bottom: 10px;
+}
+
+.retro-info {
+    color: var(--retro-beige);
+    font-weight: bold;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 12px;
+    border-left: 5px solid var(--retro-yellow);
+    margin-bottom: 20px;
+}
+
+/* ======= SECCIONES ======= */
+.retro-section {
+    background: rgba(255, 255, 255, 0.07);
+    border: 3px solid var(--retro-dark);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 6px 6px 0 #000;
+    margin-bottom: 35px;
+}
+
+/* ======= BOTONES PEQUEÑOS ======= */
+.retro-actions {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.retro-btn-small {
+    display: inline-block;
+    padding: 8px 14px;
+    background: var(--retro-red);
+    border: 2px solid #000;
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 8px;
+    box-shadow: 4px 4px 0 #000;
+}
+
+.retro-btn-small:hover {
+    background: var(--retro-orange);
+    transform: translate(-2px, -2px);
+}
+
+/* ======= FX GRID ======= */
+.retro-fx-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.retro-fx-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* ======= BOTONES FX ======= */
+.retro-fx-btn {
+    padding: 15px;
+    border-radius: 12px;
+    border: 3px solid #000;
+    cursor: pointer;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #000;
+    box-shadow: 5px 5px 0 #000;
+    transition: 0.15s ease;
+}
+
+.retro-fx-btn:hover {
+    filter: brightness(1.1);
+    transform: translate(-3px, -3px);
+    box-shadow: 7px 7px 0 #000;
+}
+
+/* ======= LISTA DE PROGRAMAS ======= */
+.retro-program-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.retro-program-list li {
+    margin-bottom: 8px;
+}
+
+.retro-link {
+    color: var(--retro-yellow);
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.retro-link:hover {
+    text-decoration: underline;
+}
+
+/* ======= MENSAJES VACÍOS ======= */
+.retro-empty {
+    color: var(--retro-beige);
+    font-style: italic;
+}
+
+    .retro-header {
+        width: 100%;
+        background: #3a1c0d;
+        padding: 18px 25px;
+        border-bottom: 4px solid #E76219;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 0 12px rgba(0,0,0,0.6);
+    }
+
+    .retro-title {
+        font-family: 'Courier New', monospace;
+        font-size: 28px;
+        color: #FEA712;
+        text-shadow: 2px 2px #000;
+        margin: 0;
+    }
+
+    .retro-nav {
+        display: flex;
+        gap: 15px;
+    }
+
+    .retro-link {
+        font-family: 'Courier New', monospace;
+        color: #FDDCA9;
+        text-decoration: none;
+        padding: 8px 14px;
+        border: 2px solid #C21717;
+        border-radius: 5px;
+        background: #562717;
+        transition: 0.2s;
+        text-transform: uppercase;
+        font-size: 14px;
+        letter-spacing: 1px;
+    }
+
+    .retro-link:hover {
+        background: #E76219;
+        color: #000;
+        border-color: #FEA712;
+    }

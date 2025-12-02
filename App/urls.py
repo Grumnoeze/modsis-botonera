@@ -25,6 +25,5 @@ urlpatterns = [
     path('fx/<int:fx_id>/editar/', fx_editar, name='fx_editar'),
     path('fx/<int:fx_id>/toggle/', fx_toggle_activo, name='fx_toggle'),
     path('fx/<int:fx_id>/play/', reproducir_fx, name='fx_play'),
-    
-# mati puto 
+
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
