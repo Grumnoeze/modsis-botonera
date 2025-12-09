@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import FileExtensionValidator
 
 
 class Rol(models.TextChoices):
@@ -47,7 +48,10 @@ class FX(models.Model):
         OPERADOR = "OPERADOR", "Propio del operador"
 
     nombre = models.CharField(max_length=120)
-    archivo = models.FileField(upload_to='fx/')
+    archivo = models.FileField(
+        upload_to='fx/',
+        validators=[FileExtensionValidator(allowed_extensions=['mp3', 'wav'])]
+    )
     categoria = models.ForeignKey(CategoriaFX, on_delete=models.SET_NULL, null=True, blank=True)
     scope = models.CharField(max_length=20, choices=Scope.choices, default=Scope.PROGRAMA)
 

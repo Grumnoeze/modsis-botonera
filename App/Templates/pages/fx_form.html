@@ -3,13 +3,15 @@
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>{% if fx %}Editar FX{% else %}Crear FX{% endif %}</title>
 </head>
+
 <body>
-  {% block contenido %}
-      <style>
+    {% block contenido %}
+    <style>
         body {
             background: #2a1206;
             font-family: 'Courier New', monospace;
@@ -100,7 +102,8 @@
             <input type="text" name="nombre" value="{{ fx.nombre|default:'' }}" required>
 
             <label>Archivo (WAV/MP3)</label>
-            <input type="file" name="archivo" {% if not fx %}required{% endif %}>
+            <input type="file" name="archivo" accept=".mp3,.wav" {% if not fx %}required{% endif %}>
+
 
             <label>Color del botón</label>
             <input type="color" name="color_boton" value="{{ fx.color_boton|default:'#ddd' }}">
@@ -118,6 +121,7 @@
         </form>
 
     </div>
-{% endblock %}
+    {% endblock %}
 </body>
+
 </html>
