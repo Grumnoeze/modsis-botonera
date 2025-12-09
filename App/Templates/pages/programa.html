@@ -25,7 +25,7 @@
       color: var(--retro-beige);
     }
 
-    header{
+    header {
       margin-bottom: 25px;
     }
 
@@ -144,50 +144,74 @@
       {{ programa.descripcion }}
     </div>
 
-{% if es_jefe or user in programa.operadores.all %}
+    {% if es_jefe or user in programa.productores.all %}
     <a class="retro-btn retro-btn-small"
-    href="{% url 'fx_crear_programa' 'PROGRAMA' programa.id %}">
-    Crear FX de programa
-  </a>
+      href="{% url 'fx_crear_programa' 'PROGRAMA' programa.id %}?next={{ request.path }}">
+      Crear FX de programa
+    </a>
+    {% endif %}
 
-{% endif %}
 
-<section class="retro-section">
-  <h3 class="retro-subtitle">FX institucionales</h3>
-  <div class="retro-fx-grid">
-    {% for fx in fx_institucionales %}
-      <button class="retro-fx-btn"
-              style="background-color: {{ fx.color_boton|default:'#E76219' }};"
-              data-file-url="{{ fx.archivo.url }}"
-              data-volume="{{ fx.volumen_default }}"
-              onclick="playFx(this.dataset.fileUrl, parseFloat(this.dataset.volume || '1'))">
-        {{ fx.nombre }}
-      </button>
-    {% empty %}
-      <p class="retro-empty">No hay FX institucionales.</p>
-    {% endfor %}
-  </div>
-</section>
+    <section class="retro-section">
+      <h3 class="retro-subtitle">FX institucionales</h3>
+      <div class="retro-fx-grid">
+        {% for fx in fx_institucionales %}
+        <button class="retro-fx-btn" style="background-color: {{ fx.color_boton|default:'#E76219' }};"
+          data-file-url="{{ fx.archivo.url }}" data-volume="{{ fx.volumen_default }}"
+          onclick="playFx(this.dataset.fileUrl, parseFloat(this.dataset.volume || '1'))">
+          {{ fx.nombre }}
+        </button>
+        {% empty %}
+        <p class="retro-empty">No hay FX institucionales.</p>
+        {% endfor %}
+      </div>
+    </section>
 
-<section class="retro-section">
-  <h3 class="retro-subtitle">FX del programa</h3>
-  <div class="retro-fx-grid">
-    {% for fx in fx_programa %}
-      <button class="retro-fx-btn"
-              style="background-color: {{ fx.color_boton|default:'#E76219' }};"
-              data-file-url="{{ fx.archivo.url }}"
-              data-volume="{{ fx.volumen_default }}"
-              onclick="playFx(this.dataset.fileUrl, parseFloat(this.dataset.volume || '1'))">
-        {{ fx.nombre }}
-      </button>
-      {% if es_jefe or user in programa.operadores.all %}
+    <section class="retro-section">
+      <h3 class="retro-subtitle">FX del programa</h3>
+      <div class="retro-fx-grid">
+        {% for fx in fx_programa %}
+        <button class="retro-fx-btn" style="background-color: {{ fx.color_boton|default:'#E76219' }};"
+          data-file-url="{{ fx.archivo.url }}" data-volume="{{ fx.volumen_default }}"
+          onclick="playFx(this.dataset.fileUrl, parseFloat(this.dataset.volume || '1'))">
+          {{ fx.nombre }}
+        </button>
+        {% if es_jefe or user in programa.productores.all %}
         <a href="{% url 'fx_editar' fx.id %}">Editar</a>
-      {% endif %}
-    {% empty %}
-      <p class="retro-empty">No hay FX de este programa.</p>
-    {% endfor %}
-  </div>
-</section>
+        {% endif %}
+
+        {% empty %}
+        <p class="retro-empty">No hay FX de este programa.</p>
+        {% endfor %}
+      </div>
+    </section>
+    <a class="retro-btn retro-btn-small"
+      href="{% url 'fx_crear_programa' 'OPERADOR' programa.id %}?next={{ request.path }}">
+      Crear FX personal
+    </a>
+    <section class="retro-section">
+      <h3 class="retro-subtitle">Mis FX propios</h3>
+
+      <div class="retro-fx-grid">
+        {% for fx in fx_propios %}
+        <div class="retro-fx-item" style="display: flex; align-items: center;">
+          <button class="retro-fx-btn" data-file-url="{{ fx.archivo.url }}" data-volume="{{ fx.volumen_default }}"
+            onclick="playFx(this.dataset.fileUrl, parseFloat(this.dataset.volume || '1'))" style="width: 100%;">
+            {{ fx.nombre }}
+          </button>
+          <a class="retro-link" href="{% url 'fx_editar' fx.id %}"
+            style="display: flex; align-items: center; justify-content: center; width: fit-content;"><svg
+              xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FDDCA9"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 14.66V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5.34"></path>
+              <polygon points="18 2 22 6 12 16 8 16 8 12 18 2"></polygon>
+            </svg></a>
+        </div>
+        {% empty %}
+        <p class="retro-empty">Aún no tienes FX propios.</p>
+        {% endfor %}
+      </div>
+    </section>
 
     <!-- Operadores -->
     <h3 class="retro-subtitle">Operadores asignados</h3>
@@ -220,52 +244,52 @@
     }
   </script>
 
-<script>
+  <script>
     function getLuminance(hex) {
-        // Eliminar el #
-        hex = hex.replace("#", "");
+      // Eliminar el #
+      hex = hex.replace("#", "");
 
-        // Convertir a RGB
-        let r = parseInt(hex.substr(0, 2), 16);
-        let g = parseInt(hex.substr(2, 2), 16);
-        let b = parseInt(hex.substr(4, 2), 16);
+      // Convertir a RGB
+      let r = parseInt(hex.substr(0, 2), 16);
+      let g = parseInt(hex.substr(2, 2), 16);
+      let b = parseInt(hex.substr(4, 2), 16);
 
-        // Calcular luminancia relativa (WCAG)
-        let a = [r, g, b].map(v => {
-            v /= 255;
-            return v <= 0.03928
-                ? v / 12.92
-                : Math.pow((v + 0.055) / 1.055, 2.4);
-        });
+      // Calcular luminancia relativa (WCAG)
+      let a = [r, g, b].map(v => {
+        v /= 255;
+        return v <= 0.03928
+          ? v / 12.92
+          : Math.pow((v + 0.055) / 1.055, 2.4);
+      });
 
-        return 0.2126 * a[0] + 0.7152 * a[1] + 0.0722 * a[2];
+      return 0.2126 * a[0] + 0.7152 * a[1] + 0.0722 * a[2];
     }
 
     document.addEventListener("DOMContentLoaded", () => {
-        document.querySelectorAll(".retro-fx-btn").forEach(btn => {
-            let bg = btn.style.backgroundColor;
+      document.querySelectorAll(".retro-fx-btn").forEach(btn => {
+        let bg = btn.style.backgroundColor;
 
-            // Convertir rgb() → hex si es necesario
-            if (bg.startsWith("rgb")) {
-                const rgb = bg.match(/\d+/g).map(Number);
-                bg = "#" + rgb.map(v => v.toString(16).padStart(2, "0")).join("");
-            }
+        // Convertir rgb() → hex si es necesario
+        if (bg.startsWith("rgb")) {
+          const rgb = bg.match(/\d+/g).map(Number);
+          bg = "#" + rgb.map(v => v.toString(16).padStart(2, "0")).join("");
+        }
 
-            // Si sigue sin ser hex, no hacemos nada
-            if (!bg.startsWith("#")) return;
+        // Si sigue sin ser hex, no hacemos nada
+        if (!bg.startsWith("#")) return;
 
-            const luminance = getLuminance(bg);
+        const luminance = getLuminance(bg);
 
-            // Si la luminancia es baja, el color es oscuro → poner texto blanco
-            if (luminance < 0.5) {
-                btn.style.color = "white";
-            } else {
-                btn.style.color = "black";
-            }
-        });
+        // Si la luminancia es baja, el color es oscuro → poner texto blanco
+        if (luminance < 0.5) {
+          btn.style.color = "white";
+        } else {
+          btn.style.color = "black";
+        }
+      });
     });
-</script>
-{% endblock %}
+  </script>
+  {% endblock %}
 </body>
 
 </html>

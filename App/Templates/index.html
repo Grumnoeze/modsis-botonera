@@ -24,7 +24,7 @@
             {% if perfil.rol == 'JEFE' %}
                 <!-- Solo Jefe -->
                 <a class="retro-link" href="{% url 'registrar' %}">Registrar usuario</a>
-                <a class="retro-link" href="{% url 'crear_usuario_manual' %}">Carga manual</a>
+                <!-- <a class="retro-link" href="{% url 'crear_usuario_manual' %}">Carga manual</a> -->
                 <!-- <a class="retro-link" href="{% url 'fx_crear' 'global' %}">Crear FX Global</a> -->
 
             {% elif perfil.rol == 'OPERADOR' %}

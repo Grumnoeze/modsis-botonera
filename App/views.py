@@ -111,6 +111,8 @@ def dashboard(request):
 @login_required
 def programa_detalle(request, programa_id):
     programa = get_object_or_404(Programa, id=programa_id, activo=True)
+    fx_propios = FX.objects.filter(scope=FX.Scope.OPERADOR, propietario=request.user, activo=True)
+
     # Verificación de acceso: jefe, operador asignado o productor asignado
     if not (es_jefe(request.user) or
             programa.operadores.filter(id=request.user.id).exists() or
@@ -124,10 +126,12 @@ def programa_detalle(request, programa_id):
         'programa': programa,
         'fx_programa': fx_programa,
         'fx_institucionales': fx_institucionales,
+        'fx_propios': fx_propios,
         'operadores': programa.operadores.all(),
         'productores': programa.productores.all(),
         'es_jefe': es_jefe(request.user),
     })
+
 
 
 @login_required
@@ -206,13 +210,26 @@ def fx_crear(request, scope, programa_id=None):
         elif scope == FX.Scope.PROGRAMA:
             fx.scope = FX.Scope.PROGRAMA
             programa = get_object_or_404(Programa, id=programa_id)
-            # Solo jefe u operador asignado puede crear
-            if not (es_jefe(request.user) or programa.operadores.filter(id=request.user.id).exists()):
-                return HttpResponseForbidden("No puedes crear FX para este programa.")
+            # Solo jefe o productor asignado puede crear
+            if not (es_jefe(request.user) or programa.productores.filter(id=request.user.id).exists()):
+                return HttpResponseForbidden("Solo productores o el jefe pueden crear FX de programa.")
             fx.programa = programa
 
+
         fx.save()
-        return redirect('dashboard')
+
+        next_url = request.GET.get("next") or request.POST.get("next")   
+        if next_url:
+            return redirect(next_url)
+
+        # fallback si no hay "next"
+        if fx.scope == FX.Scope.PROGRAMA and fx.programa:
+            return redirect("programa_detalle", programa_id=fx.programa.id)
+        elif fx.scope == FX.Scope.OPERADOR:
+            return redirect("dashboard")  # o "perfil"
+        else:
+            return redirect("dashboard")
+
 
     return render(request, 'pages/fx_form.html', {'scope': scope, 'programa_id': programa_id})
 
@@ -231,7 +248,14 @@ def fx_editar(request, fx_id):
         fx.tecla_rapida = request.POST.get('tecla_rapida', fx.tecla_rapida)
         fx.volumen_default = float(request.POST.get('volumen_default', fx.volumen_default))
         fx.save()
-        return redirect('dashboard')
+
+        if fx.scope == FX.Scope.PROGRAMA and fx.programa:
+            return redirect('programa_detalle', programa_id=fx.programa.id)
+        elif fx.scope == FX.Scope.OPERADOR:
+            return redirect('perfil')  # o a la vista donde se listan FX propios
+        else:
+            return redirect('dashboard')
+
 
     return render(request, 'pages/fx_form.html', {'fx': fx})
 

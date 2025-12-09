@@ -97,6 +97,7 @@
 
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
+            <input type="hidden" name="next" value="{{ request.GET.next }}">
 
             <label>Nombre</label>
             <input type="text" name="nombre" value="{{ fx.nombre|default:'' }}" required>

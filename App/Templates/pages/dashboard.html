@@ -12,7 +12,7 @@
         <p class="retro-info">Eres Jefe de Operadores. Tienes acceso total.</p>
 
         <div class="retro-actions">
-            <a class="retro-btn retro-btn-small" href="{% url 'fx_crear' 'INSTITUCIONAL' %}">
+            <a class="retro-btn retro-btn-small" href="{% url 'fx_crear' 'INSTITUCIONAL' %}?next={{ request.path }}">
                 Crear FX institucional
             </a>
             <a class="retro-btn retro-btn-small" href="{% url 'fx_crear' 'OPERADOR' %}">
@@ -86,27 +86,27 @@
         </h3>
 
         <ul class="retro-program-list" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 30px;">
-    {% for p in programas %}
-    <li style="display: flex; flex-direction: column; gap: 5px;">
-        <a class="retro-link" href="{% url 'programa_detalle' p.id %}">
-            {{ p.nombre }}
-        </a>
-        {% if es_jefe %}
-        <a class="retro-btn retro-btn-small" href="{% url 'programa_editar' p.id %}">
-            Editar
-        </a>
-        {% endif %}
-    </li>
-    {% empty %}
-    <li class="retro-empty">
-        {% if es_jefe %}
-        No hay programas creados.
-        {% else %}
-        No tienes programas asignados.
-        {% endif %}
-    </li>
-    {% endfor %}
-</ul>
+            {% for p in programas %}
+            <li style="display: flex; flex-direction: column; gap: 5px;">
+                <a class="retro-link" href="{% url 'programa_detalle' p.id %}">
+                    {{ p.nombre }}
+                </a>
+                {% if es_jefe %}
+                <a class="retro-btn retro-btn-small" href="{% url 'programa_editar' p.id %}">
+                    Editar
+                </a>
+                {% endif %}
+            </li>
+            {% empty %}
+            <li class="retro-empty">
+                {% if es_jefe %}
+                No hay programas creados.
+                {% else %}
+                No tienes programas asignados.
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
 
     </section>
 
