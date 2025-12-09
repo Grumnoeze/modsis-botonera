@@ -1,52 +1,80 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>{% if programa %}Editar Programa{% else %}Crear Programa{% endif %}</title>
-</head>
-<body>
-  <h2>{% if programa %}Editar Programa{% else %}Crear Programa{% endif %}</h2>
-  <form method="post">
-    {% csrf_token %}
-    <label>Nombre</label>
-    <input type="text" name="nombre" value="{{ programa.nombre|default:'' }}" required>
+{% extends "index.html" %}
+{% load static %}
 
-    <label>Descripción</label>
-    <textarea name="descripcion">{{ programa.descripcion|default:'' }}</textarea>
+{% block title %}
+  {% if programa %}Editar Programa{% else %}Crear Programa{% endif %}
+{% endblock %}
+
+{% block contenido %}
+<link rel="stylesheet" href="{% static 'css/retro.css' %}">
+
+<div class="retro-container">
+
+  <h2 class="retro-title">
+    {% if programa %}Editar Programa{% else %}Crear Programa{% endif %}
+  </h2>
+
+  <form method="post" class="retro-form">
+    {% csrf_token %}
+
+    <label class="retro-label">Nombre</label>
+    <input
+      type="text"
+      name="nombre"
+      value="{{ programa.nombre|default:'' }}"
+      class="retro-input"
+      required
+    >
+
+    <label class="retro-label">Descripción</label>
+    <textarea
+      name="descripcion"
+      class="retro-textarea"
+    >{{ programa.descripcion|default:'' }}</textarea>
 
     {% if programa %}
-      <h3>Asignar Operadores</h3>
-      {% for u in operadores %}
-        <label>
-          <input
-            type="checkbox"
-            name="operadores"
-            value="{{ u.id }}"
-            {% if u in programa.operadores.all %}checked{% endif %}
-          >
-          {{ u.username }} ({{ u.perfilusuario.rol }})
-        </label><br>
-      {% empty %}
-        <p>No hay operadores disponibles.</p>
-      {% endfor %}
+      <h3 class="retro-subtitle">Asignar Operadores</h3>
 
-      <h3>Asignar Productores</h3>
-      {% for u in productores %}
-        <label>
-          <input
-            type="checkbox"
-            name="productores"
-            value="{{ u.id }}"
-            {% if u in programa.productores.all %}checked{% endif %}
-          >
-          {{ u.username }} ({{ u.perfilusuario.rol }})
-        </label><br>
-      {% empty %}
-        <p>No hay productores disponibles.</p>
-      {% endfor %}
+      <div class="retro-checkbox-list">
+        {% for u in operadores %}
+          <label class="retro-checkbox-item">
+            <input
+              type="checkbox"
+              name="operadores"
+              value="{{ u.id }}"
+              {% if u in programa.operadores.all %}checked{% endif %}
+            >
+            <span>{{ u.username }} ({{ u.perfilusuario.rol }})</span>
+          </label>
+        {% empty %}
+          <p class="retro-empty">No hay operadores disponibles.</p>
+        {% endfor %}
+      </div>
+
+      <h3 class="retro-subtitle">Asignar Productores</h3>
+
+      <div class="retro-checkbox-list">
+        {% for u in productores %}
+          <label class="retro-checkbox-item">
+            <input
+              type="checkbox"
+              name="productores"
+              value="{{ u.id }}"
+              {% if u in programa.productores.all %}checked{% endif %}
+            >
+            <span>{{ u.username }} ({{ u.perfilusuario.rol }})</span>
+          </label>
+        {% empty %}
+          <p class="retro-empty">No hay productores disponibles.</p>
+        {% endfor %}
+      </div>
     {% endif %}
 
-    <button type="submit">{% if programa %}Guardar{% else %}Crear{% endif %}</button>
+    <button type="submit" class="retro-button">
+      {% if programa %}Guardar{% else %}Crear{% endif %}
+    </button>
+
   </form>
-</body>
-</html>
+</div>
+
+{% endblock %}

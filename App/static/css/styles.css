@@ -12,7 +12,7 @@
     src: url(../font/TTNormsProVariable.ttf);
 }
 
-h1, h2, h3, h4, h5, h6, p, a, span, input{
+h1, h2, h3, h4, h5, h6, p, a, span, input, label, button    {
     font-family: 'TTNorms', sans-serif !important;
 }
 
@@ -231,7 +231,8 @@ body{
 }
 
 .retro-btn-small {
-    display: inline-block;
+    display: flex;
+    width: fit-content;
     padding: 8px 14px;
     background: var(--retro-red);
     border: 2px solid #000;
@@ -349,3 +350,91 @@ body{
         color: #000;
         border-color: #FEA712;
     }
+
+    :root {
+  --retro-dark: #562717;
+  --retro-red: #C21717;
+  --retro-orange: #E76219;
+  --retro-yellow: #FEA712;
+  --retro-beige: #FDDCA9;
+}
+
+.retro-container {
+  background: var(--retro-dark);
+  color: var(--retro-beige);
+  padding: 25px;
+  border: 3px solid var(--retro-red);
+  border-radius: 10px;
+  width: 650px;
+  margin: 30px auto;
+}
+
+.retro-title {
+  text-align: center;
+  color: var(--retro-yellow);
+  text-shadow: 2px 2px var(--retro-red);
+  margin-bottom: 20px;
+  font-size: 2rem;
+}
+
+.retro-label {
+  font-weight: bold;
+  margin-top: 10px;
+  display: block;
+  color: var(--retro-yellow);
+}
+
+.retro-input,
+.retro-textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 2px solid var(--retro-orange);
+  background: var(--retro-beige);
+  color: var(--retro-dark);
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.retro-textarea {
+  height: 120px;
+}
+
+.retro-subtitle {
+  margin-top: 20px;
+  color: var(--retro-orange);
+  text-shadow: 1px 1px var(--retro-dark);
+}
+
+.retro-checkbox-list {
+  margin-left: 10px;
+  margin-bottom: 15px;
+}
+
+.retro-checkbox-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.retro-checkbox-item input {
+  margin-right: 8px;
+}
+
+.retro-button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 20px;
+  border: none;
+  background: var(--retro-red);
+  color: var(--retro-beige);
+  font-size: 1.2rem;
+  border-radius: 5px;
+  cursor: pointer;
+  text-shadow: 1px 1px var(--retro-dark);
+  transition: 0.2s;
+}
+
+.retro-button:hover {
+  background: var(--retro-orange);
+}
