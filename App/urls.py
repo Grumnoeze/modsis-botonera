@@ -5,7 +5,7 @@ from .views import (
     login_view, logout_view, dashboard,
     programa_detalle, fx_crear, fx_editar, 
     fx_toggle_activo, reproducir_fx, registrar_usuario,
-    crear_usuario_manual, perfil_view, programa_crear, programa_editar
+    crear_usuario_manual, perfil_view, programa_crear, programa_editar, fx_eliminar, programa_eliminar
 )
 from .models import FX
 
@@ -19,6 +19,9 @@ urlpatterns = [
 
     path('programa/crear/', programa_crear, name='programa_crear'), 
     path('programa/<int:programa_id>/', programa_detalle, name='programa_detalle'),
+    path('fx/<int:fx_id>/eliminar/', fx_eliminar, name='fx_eliminar'),
+    path('programa/<int:programa_id>/eliminar/', programa_eliminar, name='programa_eliminar'),
+
 
     path('fx/crear/<str:scope>/', fx_crear, name='fx_crear'), 
     path('fx/crear/<str:scope>/<int:programa_id>/', fx_crear, name='fx_crear_programa'),

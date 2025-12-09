@@ -284,3 +284,26 @@ def reproducir_fx(request, fx_id):
         'volumen_default': fx.volumen_default,
     })
 
+@login_required
+def fx_eliminar(request, fx_id):
+    fx = get_object_or_404(FX, id=fx_id)
+    # Solo jefe puede eliminar institucionales, operador su propio FX
+    if fx.scope == FX.Scope.INSTITUCIONAL and not es_jefe(request.user):
+        return HttpResponseForbidden("Solo el jefe puede eliminar FX institucionales.")
+    if fx.scope == FX.Scope.OPERADOR and fx.propietario != request.user and not es_jefe(request.user):
+        return HttpResponseForbidden("No puedes eliminar este FX.")
+
+    fx.delete()
+    # Redirigir según el scope
+    if fx.scope == FX.Scope.PROGRAMA and fx.programa:
+        return redirect("programa_detalle", programa_id=fx.programa.id)
+    return redirect("dashboard")
+
+
+@login_required
+def programa_eliminar(request, programa_id):
+    programa = get_object_or_404(Programa, id=programa_id)
+    if not es_jefe(request.user):
+        return HttpResponseForbidden("Solo el jefe puede eliminar programas.")
+    programa.delete()
+    return redirect("dashboard")
