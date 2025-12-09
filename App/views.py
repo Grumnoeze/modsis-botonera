@@ -249,12 +249,17 @@ def fx_editar(request, fx_id):
         fx.volumen_default = float(request.POST.get('volumen_default', fx.volumen_default))
         fx.save()
 
+        next_url = request.GET.get("next") or request.POST.get("next")   
+        if next_url:
+            return redirect(next_url)
+
+        # fallback si no hay "next"
         if fx.scope == FX.Scope.PROGRAMA and fx.programa:
-            return redirect('programa_detalle', programa_id=fx.programa.id)
+            return redirect("programa_detalle", programa_id=fx.programa.id)
         elif fx.scope == FX.Scope.OPERADOR:
-            return redirect('perfil')  # o a la vista donde se listan FX propios
+            return redirect("dashboard")  # o "perfil"
         else:
-            return redirect('dashboard')
+            return redirect("dashboard")
 
 
     return render(request, 'pages/fx_form.html', {'fx': fx})

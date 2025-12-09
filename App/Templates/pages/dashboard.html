@@ -149,17 +149,22 @@
     </section>
 
     <script>
-    let currentAudio = null;
-    function playFx(url, volume = 1.0) {
-        if (currentAudio) {
-        currentAudio.pause();
-        currentAudio.currentTime = 0;
+        let currentAudio = null;
+        function playFx(url, volume = 1.0) {
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+            }
+            currentAudio = new Audio(url);
+
+            // Forzar que siempre haya al menos 0.1 de volumen
+            let safeVolume = Math.max(0.1, Math.min(1, volume));
+            currentAudio.volume = safeVolume;
+
+            currentAudio.play();
         }
-        currentAudio = new Audio(url);
-        currentAudio.volume = Math.max(0, Math.min(1, volume));
-        currentAudio.play();
-    }
     </script>
+
 
 </main>
 
