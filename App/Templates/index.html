@@ -1,51 +1,57 @@
 <!DOCTYPE html>
 <html lang="es">
-<head> 
+
+<head>
     {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
+
 <body class="layout">
 
-<header class="retro-header">
+    <header class="retro-header">
 
-    <h1 class="retro-title">Botonera FX</h1>
+        <h1 class="retro-title">Botonera FX</h1>
 
-    <nav class="retro-nav">
+        <nav class="retro-nav">
 
-        {% if user.is_authenticated %}
+            {% if user.is_authenticated %}
 
             <!-- Disponible para todos los roles -->
-            <a class="retro-link" href="{% url 'dashboard' %}">Dashboard</a>
+            <a class="retro-link" href="{% url 'dashboard' %}">Panel principal</a>
             <a class="retro-link" href="{% url 'perfil' %}">Perfil</a>
 
-            {% if perfil.rol == 'JEFE' %}
-                <!-- Solo Jefe -->
-                <a class="retro-link" href="{% url 'registrar' %}">Registrar usuario</a>
-                <!-- <a class="retro-link" href="{% url 'crear_usuario_manual' %}">Carga manual</a> -->
-                <!-- <a class="retro-link" href="{% url 'fx_crear' 'global' %}">Crear FX Global</a> -->
+            {% if perfil and perfil.rol == 'JEFE' %}
+            <!-- Solo Jefe -->
+            <a class="retro-link" href="{% url 'registrar' %}">Registrar usuario</a>
 
-            {% elif perfil.rol == 'OPERADOR' %}
-                <!-- Operador puede (según tu diseño) crear FX global -->
-                <a class="retro-link" href="{% url 'fx_crear' 'OPERADOR' %}">Crear FX Personal</a>
+            {% elif perfil and perfil.rol == 'OPERADOR' %}
+            <!-- Operador -->
+            <a class="retro-link" href="{% url 'fx_crear' 'OPERADOR' %}">Crear FX Personal</a>
+
+            {% elif perfil and perfil.rol == 'PRODUCTOR' %}
+            <!-- Productor -->
+            <a class="retro-link" href="{% url 'fx_crear' 'OPERADOR' %}">Crear FX Personal</a>
 
             {% else %}
-                <!-- Productor no tiene accesos extra -->
+            <!-- Rol no identificado o perfil faltante -->
+            <!-- Opcional: dejar solo enlaces comunes -->
             {% endif %}
 
             <a class="retro-link danger" href="{% url 'logout' %}">Cerrar sesión</a>
 
-        {% else %}
+            {% else %}
 
             <!-- No autenticado -->
             <a class="retro-link" href="{% url 'login' %}">Iniciar sesión</a>
 
-        {% endif %}
-    </nav>
+            {% endif %}
 
-</header>
+        </nav>
+
+    </header>
 
     {% block contenido %}
     <main class="main-menu">
@@ -57,4 +63,5 @@
     </main>
     {% endblock %}
 </body>
+
 </html>

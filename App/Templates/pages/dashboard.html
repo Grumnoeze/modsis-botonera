@@ -164,7 +164,38 @@
 
             currentAudio.play();
         }
+
+        // Función para calcular luminancia y decidir color de texto
+        function getLuminance(hex) {
+            hex = hex.replace("#", "");
+            let r = parseInt(hex.substr(0, 2), 16);
+            let g = parseInt(hex.substr(2, 2), 16);
+            let b = parseInt(hex.substr(4, 2), 16);
+
+            let a = [r, g, b].map(v => {
+                v /= 255;
+                return v <= 0.03928
+                    ? v / 12.92
+                    : Math.pow((v + 0.055) / 1.055, 2.4);
+            });
+
+            return 0.2126 * a[0] + 0.7152 * a[1] + 0.0722 * a[2];
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll(".retro-fx-btn").forEach(btn => {
+                // aplicar el color guardado
+                if (btn.dataset.color) {
+                    btn.style.backgroundColor = btn.dataset.color;
+
+                    // ajustar color de texto según luminancia
+                    const luminance = getLuminance(btn.dataset.color);
+                    btn.style.color = luminance < 0.5 ? "white" : "black";
+                }
+            });
+        });
     </script>
+
 
 
 </main>

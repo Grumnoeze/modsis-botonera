@@ -185,10 +185,8 @@ def programa_editar(request, programa_id):
         "productores": productores
     })
 
-
 @login_required
 def fx_crear(request, scope, programa_id=None):
-    # Form simple basado en POST; en producción usar ModelForm.
     if request.method == 'POST':
         nombre = request.POST.get('nombre')
         archivo = request.FILES.get('archivo')
@@ -196,7 +194,9 @@ def fx_crear(request, scope, programa_id=None):
         tecla = request.POST.get('tecla_rapida', '')
         volumen = float(request.POST.get('volumen_default', 1.0))
 
-        fx = FX(nombre=nombre, archivo=archivo, color_boton=color, tecla_rapida=tecla, volumen_default=volumen)
+        fx = FX(nombre=nombre, archivo=archivo,
+                color_boton=color, tecla_rapida=tecla,
+                volumen_default=volumen)
 
         if scope == FX.Scope.INSTITUCIONAL:
             if not es_jefe(request.user):
@@ -204,34 +204,35 @@ def fx_crear(request, scope, programa_id=None):
             fx.scope = FX.Scope.INSTITUCIONAL
 
         elif scope == FX.Scope.OPERADOR:
+            # Jefe, operadores y productores pueden crear FX propios
+            perfil = getattr(request.user, "perfilusuario", None)
+            if not perfil or perfil.rol not in [Rol.JEFE, Rol.OPERADOR, Rol.PRODUCTOR]:
+                return HttpResponseForbidden("No tienes permisos para crear FX propios.")
             fx.scope = FX.Scope.OPERADOR
             fx.propietario = request.user
+
 
         elif scope == FX.Scope.PROGRAMA:
             fx.scope = FX.Scope.PROGRAMA
             programa = get_object_or_404(Programa, id=programa_id)
-            # Solo jefe o productor asignado puede crear
-            if not (es_jefe(request.user) or programa.productores.filter(id=request.user.id).exists()):
-                return HttpResponseForbidden("Solo productores o el jefe pueden crear FX de programa.")
+            # Solo jefe u operador asignado puede crear FX de programa
+            if not (es_jefe(request.user) or programa.operadores.filter(id=request.user.id).exists()):
+                return HttpResponseForbidden("Solo operadores asignados o el jefe pueden crear FX de programa.")
             fx.programa = programa
 
 
         fx.save()
 
-        next_url = request.GET.get("next") or request.POST.get("next")   
+        # Redirección según origen
+        next_url = request.GET.get("next") or request.POST.get("next")
         if next_url:
             return redirect(next_url)
-
-        # fallback si no hay "next"
         if fx.scope == FX.Scope.PROGRAMA and fx.programa:
             return redirect("programa_detalle", programa_id=fx.programa.id)
-        elif fx.scope == FX.Scope.OPERADOR:
-            return redirect("dashboard")  # o "perfil"
-        else:
-            return redirect("dashboard")
-
+        return redirect("dashboard")
 
     return render(request, 'pages/fx_form.html', {'scope': scope, 'programa_id': programa_id})
+
 
 @login_required
 def fx_editar(request, fx_id):
